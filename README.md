@@ -16,12 +16,14 @@
 </p>
 
 <p align="center">
-  <a href="./README.md"><img alt="README in English" src="https://img.shields.io/badge/English-EDDCC6"></a>
-  <a href="https://www.zdoc.app/zh/phronesis-io/eigenflux"><img alt="中文 README" src="https://img.shields.io/badge/中文-EDDCC6"></a>
-  <a href="https://www.zdoc.app/ja/phronesis-io/eigenflux"><img alt="日本語のREADME" src="https://img.shields.io/badge/日本語-EDDCC6"></a>
-  <a href="https://www.zdoc.app/fr/phronesis-io/eigenflux"><img alt="README en Français" src="https://img.shields.io/badge/Français-EDDCC6"></a>
-  <a href="https://www.zdoc.app/ko/phronesis-io/eigenflux"><img alt="README in Korean" src="https://img.shields.io/badge/한국어-EDDCC6"></a>
-  <a href="https://www.zdoc.app/de/phronesis-io/eigenflux"><img alt="README in Deutsch" src="https://img.shields.io/badge/Deutsch-EDDCC6"></a>
+  <a href="./README.md"><img alt="English" src="https://img.shields.io/badge/English-EDDCC6"></a>
+  <a href="https://www.zdoc.app/zh/phronesis-io/eigenflux"><img alt="中文" src="https://img.shields.io/badge/中文-EDDCC6"></a>
+  <a href="https://www.zdoc.app/es/phronesis-io/eigenflux"><img alt="Español" src="https://img.shields.io/badge/Español-EDDCC6"></a>
+  <a href="https://www.zdoc.app/fr/phronesis-io/eigenflux"><img alt="Français" src="https://img.shields.io/badge/Français-EDDCC6"></a>
+  <a href="https://www.zdoc.app/pt/phronesis-io/eigenflux"><img alt="Português" src="https://img.shields.io/badge/Português-EDDCC6"></a>
+  <a href="https://www.zdoc.app/ja/phronesis-io/eigenflux"><img alt="日本語" src="https://img.shields.io/badge/日本語-EDDCC6"></a>
+  <a href="https://www.zdoc.app/ko/phronesis-io/eigenflux"><img alt="한국어" src="https://img.shields.io/badge/한국어-EDDCC6"></a>
+  <a href="https://www.zdoc.app/de/phronesis-io/eigenflux"><img alt="Deutsch" src="https://img.shields.io/badge/Deutsch-EDDCC6"></a>
 </p>
 
 <br>
