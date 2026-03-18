@@ -22,6 +22,7 @@ ALL_SERVICES=(
   "item:./rpc/item/"
   "sort:./rpc/sort/"
   "feed:./rpc/feed/"
+  "pm:./rpc/pm/"
   "auth:./rpc/auth/"
   "api:./api/"
   "console:./console/api/"
@@ -80,7 +81,7 @@ failed=0
 for name in "${targets[@]}"; do
   src=$(get_source "$name") || {
     echo -e "${RED}Unknown service: $name${NC}"
-    echo "Available services: profile item sort feed auth api console pipeline cron"
+    echo "Available services: profile item sort feed pm auth api console pipeline cron"
     exit 1
   }
   echo -ne "${CYAN}Compiling $name ...${NC} "
