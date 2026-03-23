@@ -58,12 +58,12 @@ cd "$PROJECT_ROOT"
 echo -e "${CYAN}Regenerating Swagger documentation...${NC}"
 SWAG_CMD="$(go env GOPATH)/bin/swag"
 if [[ -x "$SWAG_CMD" ]]; then
-  # API gateway swagger (exclude console directory)
-  "$SWAG_CMD" init -g api/main.go -o api/docs --parseDependency --exclude console >/dev/null 2>&1 && \
+  # API gateway swagger (run from api directory to avoid path resolution issues)
+  (cd api && "$SWAG_CMD" init -g main.go -o docs --parseDependency --exclude ../console >/dev/null 2>&1) && \
     echo -e "${GREEN}✓ API gateway swagger${NC}" || echo -e "${RED}✗ API gateway swagger${NC}"
 
-  # Console API swagger (exclude api directory)
-  "$SWAG_CMD" init -g console/api/main.go -o console/api/docs --parseDependency --exclude api >/dev/null 2>&1 && \
+  # Console API swagger (run from console/api directory)
+  (cd console/api && "$SWAG_CMD" init -g main.go -o docs --parseDependency --exclude ../../api >/dev/null 2>&1) && \
     echo -e "${GREEN}✓ Console API swagger${NC}" || echo -e "${RED}✗ Console API swagger${NC}"
 else
   echo -e "${RED}swag not installed, skipping Swagger documentation generation${NC}"

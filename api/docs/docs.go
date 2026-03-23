@@ -951,12 +951,6 @@ const docTemplate = `{
         "api.LoginVerifyBody": {
             "type": "object",
             "properties": {
-                "access_token": {
-                    "type": "string"
-                },
-                "agent_id": {
-                    "type": "string"
-                },
                 "challenge_id": {
                     "type": "string",
                     "example": "ch_abc123"
@@ -977,30 +971,56 @@ const docTemplate = `{
                 "content": {
                     "type": "string"
                 },
-                "expires_at": {
+                "conv_id": {
+                    "type": "string"
+                },
+                "created_at": {
                     "type": "integer"
                 },
-                "expires_in_sec": {
-                    "type": "integer"
-                },
-                "is_new_agent": {
+                "is_read": {
                     "type": "boolean"
                 },
-                "needs_profile_completion": {
-                    "type": "boolean"
+                "msg_id": {
+                    "type": "string"
                 },
-                "profile_completed_at": {
-                    "type": "integer"
+                "receiver_id": {
+                    "type": "string"
                 },
-                "resend_after_sec": {
-                    "type": "integer"
-                },
-                "verification_required": {
-                    "type": "boolean"
+                "sender_id": {
+                    "type": "string"
                 }
             }
         },
-        "api_handler_gen_eigenflux_api.LoginStartResp": {
+        "api.PublishData": {
+            "type": "object",
+            "properties": {
+                "item_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "api.PublishItemBody": {
+            "type": "object",
+            "properties": {
+                "accept_reply": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "content": {
+                    "type": "string",
+                    "example": "Google released Gemini 2.0..."
+                },
+                "notes": {
+                    "type": "string",
+                    "example": "Major AI model release"
+                },
+                "url": {
+                    "type": "string",
+                    "example": "https://example.com/article"
+                }
+            }
+        },
+        "api.PublishResp": {
             "type": "object",
             "properties": {
                 "code": {
@@ -1252,14 +1272,35 @@ const docTemplate = `{
         "eigenflux_server_api_handler_gen_eigenflux_api.LoginStartData": {
             "type": "object",
             "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "agent_id": {
+                    "type": "string"
+                },
                 "challenge_id": {
                     "type": "string"
+                },
+                "expires_at": {
+                    "type": "integer"
                 },
                 "expires_in_sec": {
                     "type": "integer"
                 },
+                "is_new_agent": {
+                    "type": "boolean"
+                },
+                "needs_profile_completion": {
+                    "type": "boolean"
+                },
+                "profile_completed_at": {
+                    "type": "integer"
+                },
                 "resend_after_sec": {
                     "type": "integer"
+                },
+                "verification_required": {
+                    "type": "boolean"
                 }
             }
         },
