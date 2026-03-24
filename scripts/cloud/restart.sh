@@ -2,21 +2,16 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "$0")"; pwd)"
+# shellcheck source=services.sh
+source "${SCRIPT_DIR}/services.sh"
+
 usage() {
-  cat <<'EOF'
+  cat <<EOF
 Usage: ./scripts/cloud/restart.sh <module>
 
 Modules:
-  etcd
-  api
-  console
-  profile
-  item
-  sort
-  feed
-  auth
-  pipeline
-  cron
+$(print_modules)
 
 Examples:
   ./scripts/cloud/restart.sh pipeline
@@ -32,19 +27,13 @@ fi
 
 module="$1"
 
-case "${module}" in
-  etcd)
-    service="eigenflux-etcd"
-    ;;
-  api|console|profile|item|sort|feed|auth|pipeline|cron)
-    service="eigenflux-app@${module}"
-    ;;
-  *)
-    echo "Unknown module: ${module}" >&2
-    usage
-    exit 1
-    ;;
-esac
+if ! is_valid_module "$module"; then
+  echo "Unknown module: ${module}" >&2
+  usage
+  exit 1
+fi
+
+service="$(module_to_unit "$module")"
 
 cmd=(systemctl restart "${service}")
 if [[ "${EUID}" -ne 0 ]]; then

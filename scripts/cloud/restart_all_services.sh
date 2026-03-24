@@ -1,18 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-SERVICES=(
-  eigenflux-etcd
-  eigenflux-app@profile
-  eigenflux-app@item
-  eigenflux-app@sort
-  eigenflux-app@feed
-  eigenflux-app@auth
-  eigenflux-app@api
-  eigenflux-app@console
-  eigenflux-app@pipeline
-  eigenflux-app@cron
-)
+SCRIPT_DIR="$(cd "$(dirname "$0")"; pwd)"
+# shellcheck source=services.sh
+source "${SCRIPT_DIR}/services.sh"
 
 if [[ "${EUID}" -ne 0 ]]; then
   echo "Please run with sudo: sudo ./scripts/cloud/restart_all_services.sh"
@@ -21,7 +12,8 @@ fi
 
 echo "Restarting eigenflux services..."
 
-for svc in "${SERVICES[@]}"; do
+for mod in "${ALL_MODULES[@]}"; do
+  svc="$(module_to_unit "$mod")"
   echo "==> restarting ${svc}"
   systemctl restart "${svc}"
   systemctl is-active --quiet "${svc}"
