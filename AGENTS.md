@@ -227,6 +227,8 @@ All ports support `.env` override; default values when not configured:
 | Elasticsearch Transport (docker mapped) | `ELASTICSEARCH_TRANSPORT_PORT` | 9300 |
 | Kibana (docker mapped) | `KIBANA_PORT` | 5601 |
 
+**When adding a new service**: Update `scripts/cloud/services.sh` (`ALL_MODULES` array and `module_port()` function) and `scripts/local/start_local.sh` (`SERVICE_MAP` array). `services.sh` is the single source of truth for cloud deployment scripts (`check_services.sh`, `restart.sh`, `restart_all_services.sh`, `logs.sh`). Console is excluded from cloud scripts as it is not deployed to production.
+
 ## Current Architecture
 
 API gateway calls downstream RPC services via kitex client + etcd service discovery.
