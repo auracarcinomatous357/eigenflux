@@ -390,7 +390,7 @@ paths:
         in: query
         name: page_size
         type: integer
-      - description: Filter by status (0=pending, 1=processing, 2=failed, 3=completed)
+      - description: Filter by status (0=pending, 1=processing, 2=failed, 3=completed, 4=discarded)
         in: query
         name: status
         type: integer
