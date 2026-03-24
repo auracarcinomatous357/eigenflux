@@ -108,7 +108,7 @@ Follow standard Go conventions and best practices:
 - **Database Time Fields**: Use `int64` Unix millisecond timestamps, not `time.Time`
 - **ID Fields**: Use `BIGINT/i64` internally, return strings in HTTP JSON responses
 - **String Storage**: Store comma-separated values for keywords and domains
-- **Status Codes**: Use `0=pending, 1=processing, 2=failed, 3=completed`
+- **Status Codes**: Use `0=pending, 1=processing, 2=failed, 3=completed, 4=discarded`
 - **API Response Format**: All responses must include `code` (0=success) and `msg` fields
 
 ## Commit Message Guidelines

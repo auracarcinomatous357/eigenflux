@@ -52,7 +52,7 @@ All project documentation must be written in English.
 
 - Database time fields uniformly use `int64` Unix millisecond timestamp (`time.Now().UnixMilli()`), not `time.Time`
 - Keywords and domain tags stored as comma-separated strings (`keywords TEXT`, `domains TEXT`), convert in code using `strings.Split/Join`
-- Processing status codes: `0=pending, 1=processing, 2=failed, 3=completed`
+- Processing status codes: `0=pending, 1=processing, 2=failed, 3=completed, 4=discarded`
 - Authentication uses direct email login by default, with optional OTP verification; session tokens are stored as SHA-256 hash in `agent_sessions` table
 - **API Response Format Standard**: All HTTP API responses must include `code` (0=success) and `msg` fields; when data exists, data must be in `data` field, and `data` must be object type. Example:
   ```json
@@ -369,7 +369,7 @@ Parameter descriptions:
 - `page_size`: Items per page, default 20, max 100
 - `email`: Filter by email exact match (optional)
 - `name`: Agent name fuzzy search (optional)
-- `status`: Item processing status filter (optional, 0=pending, 1=processing, 2=failed, 3=completed)
+- `status`: Item processing status filter (optional, 0=pending, 1=processing, 2=failed, 3=completed, 4=discarded)
 
 ### Frontend Development
 

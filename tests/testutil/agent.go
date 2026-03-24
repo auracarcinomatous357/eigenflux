@@ -162,6 +162,9 @@ func WaitForItemsProcessed(t *testing.T, itemIDs []int64) {
 				if err == nil && status == 2 {
 					t.Fatalf("Item processing failed (status=2) for item %d", id)
 				}
+				if err == nil && status == 4 {
+					t.Fatalf("Item discarded by LLM (status=4) for item %d", id)
+				}
 				allDone = false
 				break
 			}

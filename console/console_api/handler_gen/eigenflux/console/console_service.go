@@ -249,7 +249,7 @@ func ListAgents(ctx context.Context, c *app.RequestContext) {
 // @Produce      json
 // @Param        page       query  integer  false  "Page number (default: 1)"
 // @Param        page_size  query  integer  false  "Items per page (default: 20, max: 100)"
-// @Param        status     query  integer  false  "Filter by status (0=pending, 1=processing, 2=failed, 3=completed)"
+// @Param        status     query  integer  false  "Filter by status (0=pending, 1=processing, 2=failed, 3=completed, 4=discarded)"
 // @Param        keyword    query  string   false  "Search by keywords"
 // @Param        title      query  string   false  "Search by title or content"
 // @Success      200  {object}  ListItemsDocResp
