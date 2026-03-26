@@ -1,10 +1,16 @@
 package dal
 
 import (
+	"errors"
+	"strings"
+	"time"
+
 	"console.eigenflux.ai/internal/model"
 
 	"gorm.io/gorm"
 )
+
+var ErrAgentNotFound = errors.New("agent not found")
 
 type AgentWithProfile struct {
 	model.Agent
@@ -44,6 +50,50 @@ func ListAgents(db *gorm.DB, params ListAgentsParams) ([]AgentWithProfile, int64
 	}
 
 	return agents, total, nil
+}
+
+type UpdateAgentParams struct {
+	ProfileKeywords *[]string // nil = not updating
+}
+
+// UpdateAgent applies partial updates to an agent.
+// Returns the refreshed AgentWithProfile.
+func UpdateAgent(db *gorm.DB, agentID int64, params UpdateAgentParams) (*AgentWithProfile, error) {
+	// Verify agent exists
+	var count int64
+	if err := db.Table("agents").Where("agent_id = ?", agentID).Count(&count).Error; err != nil {
+		return nil, err
+	}
+	if count == 0 {
+		return nil, ErrAgentNotFound
+	}
+
+	now := time.Now().UnixMilli()
+
+	// Update agent_profiles fields (keywords etc.)
+	if params.ProfileKeywords != nil {
+		joined := strings.Join(*params.ProfileKeywords, ",")
+		result := db.Exec(`
+			INSERT INTO agent_profiles (agent_id, keywords, updated_at)
+			VALUES (?, ?, ?)
+			ON CONFLICT (agent_id) DO UPDATE SET keywords = EXCLUDED.keywords, updated_at = EXCLUDED.updated_at
+		`, agentID, joined, now)
+		if result.Error != nil {
+			return nil, result.Error
+		}
+	}
+
+	// Re-read full agent data
+	var agent AgentWithProfile
+	err := db.Table("agents").
+		Select("agents.*, agent_profiles.status as profile_status, agent_profiles.keywords as profile_keywords").
+		Joins("LEFT JOIN agent_profiles ON agents.agent_id = agent_profiles.agent_id").
+		Where("agents.agent_id = ?", agentID).
+		First(&agent).Error
+	if err != nil {
+		return nil, err
+	}
+	return &agent, nil
 }
 
 type ItemWithProcessed struct {

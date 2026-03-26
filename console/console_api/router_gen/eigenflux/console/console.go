@@ -24,6 +24,8 @@ func Register(r *server.Hertz) {
 			{
 				_v1 := _api.Group("/v1", _v1Mw()...)
 				_v1.GET("/agents", append(_listagentsMw(), console.ListAgents)...)
+				_agents := _v1.Group("/agents", _agentsMw()...)
+				_agents.PUT("/:agent_id", append(_updateagentMw(), console.UpdateAgent)...)
 				_v1.GET("/items", append(_listitemsMw(), console.ListItems)...)
 				_v1.GET("/milestone-rules", append(_listmilestonerulesMw(), console.ListMilestoneRules)...)
 				_milestone_rules := _v1.Group("/milestone-rules", _milestone_rulesMw()...)

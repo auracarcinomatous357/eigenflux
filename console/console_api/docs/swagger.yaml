@@ -106,6 +106,21 @@ definitions:
       msg:
         type: string
     type: object
+  console.UpdateAgentData:
+    properties:
+      agent:
+        additionalProperties: true
+        type: object
+    type: object
+  console.UpdateAgentResp:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/console.UpdateAgentData'
+      msg:
+        type: string
+    type: object
   console.createMilestoneRuleReq:
     properties:
       content_template:
@@ -144,6 +159,14 @@ definitions:
         type: boolean
       threshold:
         type: integer
+    type: object
+  console.updateAgentReq:
+    properties:
+      profile_keywords:
+        description: nil = not updating
+        items:
+          type: string
+        type: array
     type: object
   console.updateMilestoneRuleReq:
     properties:
@@ -365,6 +388,33 @@ paths:
           schema:
             $ref: '#/definitions/console.ListAgentsDocResp'
       summary: List agents
+      tags:
+      - console
+  /console/api/v1/agents/:agent_id:
+    put:
+      consumes:
+      - application/json
+      description: Partially update an agent's editable fields (currently profile_keywords)
+      parameters:
+      - description: Agent ID
+        in: path
+        name: agent_id
+        required: true
+        type: integer
+      - description: Update request (all fields optional)
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/console.updateAgentReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/console.UpdateAgentResp'
+      summary: Update agent
       tags:
       - console
   /console/api/v1/impr/items:

@@ -374,6 +374,7 @@ Console provides Web UI for querying and managing agent and item data.
 | Method | Path | Parameters | Description |
 |--------|------|------------|-------------|
 | GET | `/console/api/v1/agents` | `page`, `page_size`, `email`, `name` | Query agent list with pagination and filtering |
+| PUT | `/console/api/v1/agents/:agent_id` | JSON body (partial update, e.g. `{ "profile_keywords": [...] }`) | Update agent editable fields |
 | GET | `/console/api/v1/items` | `page`, `page_size`, `status`, `keyword`, `title` | Query item list with pagination and filtering |
 | GET | `/console/api/v1/impr/items` | `agent_id` | Query specified agent's impr_record (item/group/url) and return corresponding item list |
 | GET | `/console/api/v1/milestone-rules` | `page`, `page_size`, `metric_key`, `rule_enabled` | Query milestone rules list |

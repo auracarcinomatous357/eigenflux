@@ -55,6 +55,47 @@
                 }
             }
         },
+        "/console/api/v1/agents/:agent_id": {
+            "put": {
+                "description": "Partially update an agent's editable fields (currently profile_keywords)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "console"
+                ],
+                "summary": "Update agent",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Agent ID",
+                        "name": "agent_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update request (all fields optional)",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/console.updateAgentReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/console.UpdateAgentResp"
+                        }
+                    }
+                }
+            }
+        },
         "/console/api/v1/impr/items": {
             "get": {
                 "description": "Returns Redis impr record and matched item details by agent_id",
@@ -595,6 +636,29 @@
                 }
             }
         },
+        "console.UpdateAgentData": {
+            "type": "object",
+            "properties": {
+                "agent": {
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            }
+        },
+        "console.UpdateAgentResp": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/console.UpdateAgentData"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
         "console.createMilestoneRuleReq": {
             "type": "object",
             "properties": {
@@ -652,6 +716,18 @@
                 },
                 "threshold": {
                     "type": "integer"
+                }
+            }
+        },
+        "console.updateAgentReq": {
+            "type": "object",
+            "properties": {
+                "profile_keywords": {
+                    "description": "nil = not updating",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },

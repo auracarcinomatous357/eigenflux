@@ -1,5 +1,5 @@
 import { List } from "@refinedev/antd";
-import { Alert, Button, InputNumber, Space, Table, Tag, Tooltip, Typography } from "antd";
+import { Alert, Button, InputNumber, Space, Table, Tag, Typography } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import axios from "axios";
 import { useState } from "react";
@@ -48,15 +48,13 @@ const formatTimestamp = (ts: number) => {
 const LongText = ({ text, maxWidth = 240 }: { text: string | null; maxWidth?: number }) => {
   if (!text) return <>-</>;
   return (
-    <Tooltip title={<div style={{ maxWidth: 500, whiteSpace: "pre-wrap", wordBreak: "break-all" }}>{text}</div>}>
-      <Typography.Text
-        copyable={{ tooltips: false }}
-        style={{ maxWidth, display: "block" }}
-        ellipsis
-      >
-        {text}
-      </Typography.Text>
-    </Tooltip>
+    <Typography.Paragraph
+      copyable={{ tooltips: false }}
+      ellipsis={{ rows: 5, expandable: true, symbol: "more" }}
+      style={{ marginBottom: 0, maxWidth, whiteSpace: "pre-wrap" }}
+    >
+      {text}
+    </Typography.Paragraph>
   );
 };
 

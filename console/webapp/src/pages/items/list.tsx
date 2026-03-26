@@ -40,15 +40,13 @@ const formatTimestamp = (ts: number) => {
 const LongText = ({ text, maxWidth = 200 }: { text: string | null; maxWidth?: number }) => {
   if (!text) return <>-</>;
   return (
-    <Tooltip title={<div style={{ maxWidth: 400, whiteSpace: "pre-wrap", wordBreak: "break-all" }}>{text}</div>}>
-      <Typography.Text
-        copyable={{ tooltips: false }}
-        style={{ maxWidth, display: "block" }}
-        ellipsis
-      >
-        {text}
-      </Typography.Text>
-    </Tooltip>
+    <Typography.Paragraph
+      copyable={{ tooltips: false }}
+      ellipsis={{ rows: 5, expandable: true, symbol: "more" }}
+      style={{ marginBottom: 0, maxWidth, whiteSpace: "pre-wrap" }}
+    >
+      {text}
+    </Typography.Paragraph>
   );
 };
 
@@ -140,15 +138,13 @@ export const ItemList = () => {
         if (!keywords || keywords.length === 0) return "-";
         const joined = keywords.join(", ");
         return (
-          <Tooltip title={<div style={{ maxWidth: 400, whiteSpace: "pre-wrap", wordBreak: "break-all" }}>{joined}</div>}>
-            <Typography.Text
-              copyable={{ tooltips: false }}
-              style={{ maxWidth: 200, display: "block" }}
-              ellipsis
-            >
-              {joined}
-            </Typography.Text>
-          </Tooltip>
+          <Typography.Paragraph
+            copyable={{ tooltips: false }}
+            ellipsis={{ rows: 5, expandable: true, symbol: "more" }}
+            style={{ marginBottom: 0, maxWidth: 200, whiteSpace: "pre-wrap" }}
+          >
+            {joined}
+          </Typography.Paragraph>
         );
       },
     },

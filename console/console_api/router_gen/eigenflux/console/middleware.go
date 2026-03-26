@@ -21,6 +21,14 @@ func _listagentsMw() []app.HandlerFunc {
 	return nil
 }
 
+func _agentsMw() []app.HandlerFunc {
+	return nil
+}
+
+func _updateagentMw() []app.HandlerFunc {
+	return nil
+}
+
 func _listitemsMw() []app.HandlerFunc {
 	// your code...
 	return nil

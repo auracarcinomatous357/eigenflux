@@ -54,6 +54,24 @@ type ListAgentImprItemsResp struct {
 }
 
 // ---------------------------------------------------------------------------
+// Request/Response types: Update Agent
+// ---------------------------------------------------------------------------
+
+type updateAgentReq struct {
+	ProfileKeywords *[]string `json:"profile_keywords"` // nil = not updating
+}
+
+type UpdateAgentData struct {
+	Agent map[string]interface{} `json:"agent"`
+}
+
+type UpdateAgentResp struct {
+	Code int32            `json:"code"`
+	Msg  string           `json:"msg"`
+	Data *UpdateAgentData `json:"data,omitempty"`
+}
+
+// ---------------------------------------------------------------------------
 // Response types: Milestone Rules
 // ---------------------------------------------------------------------------
 
@@ -214,21 +232,7 @@ func ListAgents(ctx context.Context, c *app.RequestContext) {
 
 	agentInfos := make([]map[string]interface{}, 0, len(agents))
 	for _, a := range agents {
-		info := map[string]interface{}{
-			"agent_id":   strconv.FormatInt(a.AgentID, 10),
-			"email":      a.Email,
-			"agent_name": a.AgentName,
-			"bio":        a.Bio,
-			"created_at": a.CreatedAt,
-			"updated_at": a.UpdatedAt,
-		}
-		if a.ProfileStatus != nil {
-			info["profile_status"] = int32(*a.ProfileStatus)
-		}
-		if a.ProfileKeywords != nil && *a.ProfileKeywords != "" {
-			info["profile_keywords"] = strings.Split(*a.ProfileKeywords, ",")
-		}
-		agentInfos = append(agentInfos, info)
+		agentInfos = append(agentInfos, toConsoleAgentInfo(a))
 	}
 
 	c.JSON(consts.StatusOK, map[string]interface{}{
@@ -240,6 +244,63 @@ func ListAgents(ctx context.Context, c *app.RequestContext) {
 			"page":      page,
 			"page_size": pageSize,
 		},
+	})
+}
+
+// UpdateAgent godoc
+// @Summary      Update agent
+// @Description  Partially update an agent's editable fields (currently profile_keywords)
+// @Tags         console
+// @Accept       json
+// @Produce      json
+// @Param        agent_id  path  integer  true  "Agent ID"
+// @Param        body      body  updateAgentReq  true  "Update request (all fields optional)"
+// @Success      200  {object}  UpdateAgentResp
+// @Router /console/api/v1/agents/:agent_id [PUT]
+func UpdateAgent(ctx context.Context, c *app.RequestContext) {
+	agentID, err := strconv.ParseInt(strings.TrimSpace(c.Param("agent_id")), 10, 64)
+	if err != nil || agentID <= 0 {
+		writeConsoleError(c, "invalid agent_id")
+		return
+	}
+
+	var req updateAgentReq
+	if err := c.BindAndValidate(&req); err != nil {
+		writeConsoleError(c, "invalid request: "+err.Error())
+		return
+	}
+
+	if req.ProfileKeywords == nil {
+		writeConsoleError(c, "at least one field must be provided")
+		return
+	}
+
+	dalParams := dal.UpdateAgentParams{}
+
+	if req.ProfileKeywords != nil {
+		cleaned := make([]string, 0, len(*req.ProfileKeywords))
+		for _, kw := range *req.ProfileKeywords {
+			kw = strings.TrimSpace(kw)
+			if kw != "" {
+				cleaned = append(cleaned, kw)
+			}
+		}
+		dalParams.ProfileKeywords = &cleaned
+	}
+
+	agent, err := dal.UpdateAgent(db.DB, agentID, dalParams)
+	if err != nil {
+		if errors.Is(err, dal.ErrAgentNotFound) {
+			writeConsoleError(c, "agent not found")
+			return
+		}
+		writeConsoleError(c, "update failed: "+err.Error())
+		return
+	}
+
+	c.JSON(consts.StatusOK, &UpdateAgentResp{
+		Code: 0, Msg: "success",
+		Data: &UpdateAgentData{Agent: toConsoleAgentInfo(*agent)},
 	})
 }
 
@@ -822,6 +883,24 @@ func strPtr(s string) *string {
 		return nil
 	}
 	return &s
+}
+
+func toConsoleAgentInfo(a dal.AgentWithProfile) map[string]interface{} {
+	info := map[string]interface{}{
+		"agent_id":   strconv.FormatInt(a.AgentID, 10),
+		"email":      a.Email,
+		"agent_name": a.AgentName,
+		"bio":        a.Bio,
+		"created_at": a.CreatedAt,
+		"updated_at": a.UpdatedAt,
+	}
+	if a.ProfileStatus != nil {
+		info["profile_status"] = int32(*a.ProfileStatus)
+	}
+	if a.ProfileKeywords != nil && *a.ProfileKeywords != "" {
+		info["profile_keywords"] = strings.Split(*a.ProfileKeywords, ",")
+	}
+	return info
 }
 
 func toConsoleItemInfo(item dal.ItemWithProcessed) map[string]interface{} {
