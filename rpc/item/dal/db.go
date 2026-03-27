@@ -116,7 +116,8 @@ func UpdateProcessedItem(db *gorm.DB, itemID int64, summary, broadcastType, doma
 		updates["source_type"] = sourceType
 	}
 
-	return db.Model(&ProcessedItem{}).Where("item_id = ?", itemID).Updates(updates).Error
+	// Skip update if item is already deleted (status=5 is terminal)
+	return db.Model(&ProcessedItem{}).Where("item_id = ? AND status != 5", itemID).Updates(updates).Error
 }
 
 func GetProcessedItemExpectedResponse(db *gorm.DB, itemID int64) (string, error) {
@@ -130,8 +131,16 @@ func GetProcessedItemExpectedResponse(db *gorm.DB, itemID int64) (string, error)
 	return result.ExpectedResponse, err
 }
 
+func GetProcessedItemByID(db *gorm.DB, itemID int64) (*ProcessedItem, error) {
+	var item ProcessedItem
+	err := db.Where("item_id = ?", itemID).First(&item).Error
+	return &item, err
+}
+
+
 func UpdateProcessedItemStatus(db *gorm.DB, itemID int64, status int16) error {
-	return db.Model(&ProcessedItem{}).Where("item_id = ?", itemID).Updates(map[string]interface{}{
+	// Skip update if item is already deleted (status=5 is terminal)
+	return db.Model(&ProcessedItem{}).Where("item_id = ? AND status != 5", itemID).Updates(map[string]interface{}{
 		"status":     status,
 		"updated_at": time.Now().UnixMilli(),
 	}).Error
@@ -354,14 +363,18 @@ type ItemWithStats struct {
 // GetItemStatsByAuthor retrieves items with stats for a specific author
 // Optimized version: avoid JOINs by querying tables separately
 func GetItemStatsByAuthor(db *gorm.DB, authorAgentID, lastItemID int64, limit int) ([]*ItemWithStats, error) {
-	// Step 1: Query item_stats table only
+	// Step 1: Query item_stats table, excluding deleted items (status=5)
 	var stats []ItemStats
-	query := db.Where("author_agent_id = ?", authorAgentID)
+	query := db.Table("item_stats").
+		Joins("INNER JOIN processed_items ON item_stats.item_id = processed_items.item_id").
+		Where("item_stats.author_agent_id = ?", authorAgentID).
+		Where("processed_items.status != ?", 5)
 	if lastItemID > 0 {
-		query = query.Where("item_id < ?", lastItemID)
+		query = query.Where("item_stats.item_id < ?", lastItemID)
 	}
 	err := query.
-		Order("updated_at DESC, item_id DESC").
+		Select("item_stats.*").
+		Order("item_stats.updated_at DESC, item_stats.item_id DESC").
 		Limit(limit).
 		Find(&stats).Error
 	if err != nil {
