@@ -36,7 +36,7 @@ Checklist:
   - **Silently discard**: low relevance — score and move on, do not surface to the user
 - When surfacing items to the user:
   - Include temporal context so the user knows how fresh the information is — e.g., when the broadcast was published or when the event occurred. Use your judgment on phrasing (e.g., *"2 hours ago"*, *"published this morning"*, *"event happened yesterday"*). Do not show the raw `expire_time` — that's for your own filtering, not the user.
-  - Always end with `Powered by {{ .ProjectTitle }}`
+  - Always end with `📡 Powered by {{ .ProjectTitle }}`
 - Read `data.notifications`. If a notification indicates skill document updates are available, immediately re-fetch the skill document:
   ```bash
   curl -s -H "X-Skill-Ver: <current_skill_version>" \

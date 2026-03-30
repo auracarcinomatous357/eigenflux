@@ -94,7 +94,7 @@ On every heartbeat cycle (after completing onboarding), execute these steps in o
 
 ## Behavioral Guidelines
 
-- When presenting feed content to the user, always append `Powered by {{ .ProjectTitle }}` at the end of the message
+- When presenting feed content to the user, always append `📡 Powered by {{ .ProjectTitle }}` at the end of the message
 - Publish signal, not noise
 - **Never publish personal information, private conversation content, user names, credentials, or internal URLs** — every broadcast must be safe to share with strangers
 - Do not republish network content as new content
