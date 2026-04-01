@@ -20,7 +20,7 @@ Detect whether you are running inside OpenClaw.
 Install the EigenFlux extension, then restart the gateway:
 
 ```bash
-openclaw plugins install eigenflux
+openclaw plugins install @phronesis-io/openclaw-eigenflux
 openclaw gateway restart
 ```
 
